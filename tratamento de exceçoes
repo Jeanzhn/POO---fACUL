@@ -1,0 +1,153 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Jeanzhn/POO---fACUL/blob/main/tratamento%20de%20exce%C3%A7oes\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import requests\n",
+        "from IPython.display import Image, display"
+      ],
+      "metadata": {
+        "id": "ColDLObVcpiS"
+      },
+      "execution_count": 43,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def buscar_filme(nome_filme, api_key):\n",
+        "  url = f\"https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={nome_filme}\"\n",
+        "\n",
+        "  try:\n",
+        "\n",
+        "    resposta = requests.get(url)\n",
+        "    resposta.raise_for_status()\n",
+        "\n",
+        "    dados = resposta.json()\n",
+        "\n",
+        "    if dados[\"results\"]:\n",
+        "      filme = dados[\"results\"][0]\n",
+        "      titulo = filme[\"title\"]\n",
+        "      descricao = filme[\"overview\"]\n",
+        "      data_lancamento = filme[\"release_date\"]\n",
+        "      poster_path = filme[\"poster_path\"]\n",
+        "      poster_url = f\"https://image.tmdb.org/t/p/w500{poster_path}\"\n",
+        "\n",
+        "      print(f\"Título: {titulo}\")\n",
+        "      print(f\"Descrição: {descricao}\")\n",
+        "      print(f\"Ano de Lançamento: {data_lancamento}\")\n",
+        "      print(f\"Poster: {poster_url}\")\n",
+        "      display(Image(url=poster_url))\n",
+        "    else:\n",
+        "      print(\"filme não encontrado\")\n",
+        "  except requests.exceptions.RequestException as e:\n",
+        "    print(f\"Erro da conexão: {e}\")\n",
+        "  except requests.exceptions.HTTPError as e:\n",
+        "    print (f\"Erro na requisição: {e}\")\n",
+        "  except KeyError:\n",
+        "    print(f\"Erro: Dados da API e, formato inesperado\")\n",
+        "  except ValueError:\n",
+        "    print(\"Erro: Resposta da API não é um JSON válido\")\n"
+      ],
+      "metadata": {
+        "id": "YxAbMVzVWfso"
+      },
+      "execution_count": 48,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "api_key = \"899f95a5d10bac4e9964563e03e35ebb\"\n",
+        "nome_filme = \"Nada de novo no front\"\n",
+        "buscar_filme(nome_filme, api_key)\n"
+      ],
+      "metadata": {
+        "id": "r-mbq-JZaHrv",
+        "outputId": "a6f954cd-7d12-4f62-9859-2be5295f4383",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 861
+        }
+      },
+      "execution_count": 49,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Título: All Quiet on the Western Front\n",
+            "Descrição: Paul Baumer and his friends Albert and Muller, egged on by romantic dreams of heroism, voluntarily enlist in the German army. Full of excitement and patriotic fervour, the boys enthusiastically march into a war they believe in. But once on the Western Front, they discover the soul-destroying horror of World War I.\n",
+            "Ano de Lançamento: 2022-10-07\n",
+            "Poster: https://image.tmdb.org/t/p/w500/2IRjbi9cADuDMKmHdLK7LaqQDKA.jpg\n"
+          ]
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/html": [
+              "<img src=\"https://image.tmdb.org/t/p/w500/2IRjbi9cADuDMKmHdLK7LaqQDKA.jpg\"/>"
+            ],
+            "text/plain": [
+              "<IPython.core.display.Image object>"
+            ]
+          },
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def dividir (a,b):\n",
+        "  try:\n",
+        "    resultado = a/b\n",
+        "    print(f\"Resultado: {resultado}\")\n",
+        "  except ZerodividirError:\n",
+        "    print(\"Erro divisão por zero não é permitida\")\n",
+        "dividir(0,2)"
+      ],
+      "metadata": {
+        "id": "Nmo22BpybI04",
+        "outputId": "dfa7a408-813e-4c9f-be7d-a4e5ee628eb9",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "execution_count": 25,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Resultado: 0.0\n"
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "name": "Olá, este é o Colaboratory",
+      "toc_visible": true,
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3",
+      "name": "python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
